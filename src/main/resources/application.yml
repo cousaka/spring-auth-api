@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/spring_auth
+    username: spring_auth
+    password: spring_auth_password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      "[hibernate.format_sql]": true
+
+server:
+  port: 8080
