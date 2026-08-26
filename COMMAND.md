@@ -47,15 +47,15 @@ mvn spring-boot:run
 
 ### クリーンビルド
 ``` bash
-./mvnw clean package
+mvn clean package
 ```
 
 ### テスト実行
 ``` bash
-./mvnw test
+mvn test
 ```
 
-### テスト実行
+### 依存関係
 ``` bash
-./mvnw dependency:resolve
+mvn dependency:resolve
 ```
