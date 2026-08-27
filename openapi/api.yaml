@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: Sample API
+  version: 1.0.0
+  description: OpenAPI テンプレート
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  /hello:
+    get:
+      summary: Hello API
+      description: Hello API の例
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelloResponse"
+
+components:
+  schemas:
+    HelloResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Hello World"
