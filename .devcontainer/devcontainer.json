@@ -15,7 +15,8 @@
                 "vscjava.vscode-spring-initializr",
                 "vscjava.vscode-spring-boot-dashboard",
                 "eamodio.gitlens",
-                "GitHub.vscode-pull-request-github"
+                "GitHub.vscode-pull-request-github",
+                "humao.rest-client"
             ]
         }
     },

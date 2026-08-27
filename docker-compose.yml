@@ -12,6 +12,10 @@ services:
       - ${HOME}/.ssh/agent.sock:/tmp/ssh-agent.sock
     environment:
       SSH_AUTH_SOCK: /tmp/ssh-agent.sock
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
       TZ: Asia/Tokyo
     command: sleep infinity
     ports:
@@ -25,7 +29,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      ENV: TZ=Asia/Tokyo
+      TZ: Asia/Tokyo
     ports:
       - "5432:5432"
     volumes:

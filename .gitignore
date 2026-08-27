@@ -2,24 +2,41 @@
 # Java / Maven / Spring Boot
 # ============================
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+!.mvn/wrapper/maven-wrapper.jar
 
 # ============================
 # IDE / Editor
 # ============================
-
-### VS Code ###
 .vscode/
+.idea/
+*.iml
 
 # ============================
-# OS / Misc
+# Dev Container
+# ============================
+# devcontainer.json などはGit管理するため除外しない
+
+# ============================
+# Environment / Secrets
+# ============================
+.env
+.env.local
+.env.*.local
+
+# ============================
+# OS
 # ============================
 .DS_Store
 Thumbs.db
 
 # ============================
-# Environment
+# Logs
 # ============================
-.env
+*.log
+
+# ============================
+# Temporary files
+# ============================
+*.tmp
+*.swp
+*.swo

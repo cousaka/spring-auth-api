@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:8080
+@email = test1@example.com
+@password = password
+@name = Test User
+
+
+### 0. ユーザー登録
+# 新規ユーザーを登録する
+# 成功すると HTTP 201 Created が返る
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "name": "{{name}}"
+}
+
+
+### 1. ログイン
+# メールアドレスとパスワードでログインする
+# レスポンスのJWTを「login」という名前で保存する
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+
+### 2. JWT付きで認証APIにアクセス
+# ログインで取得したJWTをAuthorizationヘッダーに設定する
+# 認証に成功するとユーザー情報が返る
+GET {{baseUrl}}/api/user/me
+Authorization: Bearer {{login.response.body.token}}
+
+
+### 3. JWTなしで認証APIにアクセス
+# Authorizationヘッダーを付けずにアクセスする
+# 認証されていないため HTTP 401 Unauthorized が返る
+GET {{baseUrl}}/api/user/me
