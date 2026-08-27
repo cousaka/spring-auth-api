@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.springauthapi.domain.User;
 import com.example.springauthapi.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
 
@@ -25,5 +27,21 @@ public class UserService {
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+    }
+
+    /**
+    * ユーザー情報を更新する
+    *
+    * @param email 認証済みユーザーのメールアドレス
+    * @param name 新しいユーザー名
+    * @return 更新後のユーザー情報
+    */
+    @Transactional
+    public User update(String email, String name) {
+        User user = findByEmail(email);
+
+        user.setName(name);
+
+        return userRepository.save(user);
     }
 }

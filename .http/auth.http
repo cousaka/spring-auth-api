@@ -2,6 +2,7 @@
 @email = test1@example.com
 @password = password
 @name = Test User
+@newName = Updated User
 
 
 ### 0. ユーザー登録
@@ -37,7 +38,26 @@ GET {{baseUrl}}/api/user/me
 Authorization: Bearer {{login.response.body.token}}
 
 
-### 3. JWTなしで認証APIにアクセス
+### 3. ユーザー情報を編集
+# 現在ログインしているユーザー自身の情報を更新する
+# JWTが必要
+# 成功すると HTTP 200 OK が返る
+PUT {{baseUrl}}/api/user/me
+Content-Type: application/json
+Authorization: Bearer {{login.response.body.token}}
+
+{
+    "name": "{{newName}}"
+}
+
+
+### 4. 編集後のユーザー情報を取得
+# 更新後のユーザー情報を確認する
+GET {{baseUrl}}/api/user/me
+Authorization: Bearer {{login.response.body.token}}
+
+
+### 5. JWTなしで認証APIにアクセス
 # Authorizationヘッダーを付けずにアクセスする
 # 認証されていないため HTTP 401 Unauthorized が返る
 GET {{baseUrl}}/api/user/me
