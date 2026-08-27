@@ -81,6 +81,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/register").permitAll()
                 // ログイン
                 .requestMatchers("/api/auth/login").permitAll()
+                // ADMIN
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // その他はJWT必須
                 .anyRequest().authenticated())
 

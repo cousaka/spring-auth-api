@@ -30,6 +30,18 @@ public class UserService {
     }
 
     /**
+     * IDからユーザーを取得する
+     *
+     * @param id ユーザーID
+     * @return ユーザー情報
+     * @throws UsernameNotFoundException ユーザーが存在しない場合
+     */
+    public User findById(Long id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("ユーザーが見つかりません: " + id));
+    }
+
+    /**
     * ユーザー情報を更新する
     *
     * @param email 認証済みユーザーのメールアドレス

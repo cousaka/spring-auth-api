@@ -21,12 +21,26 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
     }
 
     /**
-     * リクエストごとにJWTを検証するフィルター
+     * JWT認証を行わないAPIを指定する
+     *
+     * @param request HTTPリクエスト
+     * @return JWT認証をスキップする場合はtrue
+     */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        return path.equals("/api/auth/login") || path.equals("/api/auth/register");
+    }
+
+    /**
+     * リクエストごとにJWTを検証する
      *
      * @param request HTTPリクエスト
      * @param response HTTPレスポンス
@@ -37,14 +51,6 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
-        // ログイン・登録はJWT不要
-        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         // Authorizationヘッダーを取得
         String header = request.getHeader("Authorization");
@@ -72,10 +78,11 @@ public class JwtFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             // 認証情報を作成
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities());
 
             // SecurityContextに認証情報を設定
             SecurityContextHolder.getContext().setAuthentication(authentication);

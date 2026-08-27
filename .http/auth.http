@@ -1,13 +1,20 @@
 @baseUrl = http://localhost:8080
+
 @email = test1@example.com
 @password = password
 @name = Test User
-@newName = Updated User
+
+@adminEmail = admin@example.com
+@adminPassword = password
+
+@userId = 1
+
+### ========================================
+### ユーザー
+### ========================================
 
 
 ### 0. ユーザー登録
-# 新規ユーザーを登録する
-# 成功すると HTTP 201 Created が返る
 POST {{baseUrl}}/api/auth/register
 Content-Type: application/json
 
@@ -18,9 +25,7 @@ Content-Type: application/json
 }
 
 
-### 1. ログイン
-# メールアドレスとパスワードでログインする
-# レスポンスのJWTを「login」という名前で保存する
+### 1. ユーザーログイン
 # @name login
 POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
@@ -31,33 +36,73 @@ Content-Type: application/json
 }
 
 
-### 2. JWT付きで認証APIにアクセス
-# ログインで取得したJWTをAuthorizationヘッダーに設定する
-# 認証に成功するとユーザー情報が返る
+### 2. 自分のユーザー情報取得
 GET {{baseUrl}}/api/user/me
 Authorization: Bearer {{login.response.body.token}}
 
 
-### 3. ユーザー情報を編集
-# 現在ログインしているユーザー自身の情報を更新する
-# JWTが必要
-# 成功すると HTTP 200 OK が返る
-PUT {{baseUrl}}/api/user/me
+### ========================================
+### ADMIN
+### ========================================
+
+
+### 3. ADMINログイン
+# @name adminLogin
+POST {{baseUrl}}/api/auth/login
 Content-Type: application/json
-Authorization: Bearer {{login.response.body.token}}
 
 {
-    "name": "{{newName}}"
+    "email": "{{adminEmail}}",
+    "password": "{{adminPassword}}"
 }
 
 
-### 4. 編集後のユーザー情報を取得
-# 更新後のユーザー情報を確認する
-GET {{baseUrl}}/api/user/me
+### 4. ADMIN - ユーザー一覧取得
+GET {{baseUrl}}/api/admin/users
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+
+### 5. ADMIN - ユーザー詳細取得
+GET {{baseUrl}}/api/admin/users/{{userId}}
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+
+### 6. ADMIN - ユーザーをADMINに変更
+PUT {{baseUrl}}/api/admin/users/{{userId}}/role
+Content-Type: application/json
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+{
+    "role": "ADMIN"
+}
+
+
+### 7. ADMIN - ユーザーをUSERに変更
+PUT {{baseUrl}}/api/admin/users/{{userId}}/role
+Content-Type: application/json
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+{
+    "role": "USER"
+}
+
+
+### 8. ADMIN - ユーザー削除
+DELETE {{baseUrl}}/api/admin/users/{{userId}}
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+
+### ========================================
+### 権限チェック
+### ========================================
+
+
+### 9. USER - ADMIN APIにアクセス
+# USERなので403 Forbiddenになる
+GET {{baseUrl}}/api/admin/users
 Authorization: Bearer {{login.response.body.token}}
 
 
-### 5. JWTなしで認証APIにアクセス
-# Authorizationヘッダーを付けずにアクセスする
-# 認証されていないため HTTP 401 Unauthorized が返る
-GET {{baseUrl}}/api/user/me
+### 10. JWTなし - ADMIN APIにアクセス
+# JWTがないため401 Unauthorizedになる
+GET {{baseUrl}}/api/admin/users
