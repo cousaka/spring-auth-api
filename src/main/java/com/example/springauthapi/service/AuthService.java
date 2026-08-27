@@ -87,4 +87,27 @@ public class AuthService {
 
         return new LoginResponse(token, userResponse);
     }
+
+    /**
+     * パスワードを変更する
+     *
+     * @param email ユーザーのメールアドレス
+     * @param currentPassword 現在のパスワード
+     * @param newPassword 新しいパスワード
+     * @return パスワード変更が成功した場合 true、失敗した場合 false
+     */
+    public boolean changePassword(String email, String currentPassword, String newPassword) {
+        User user = userService.findByEmail(email);
+
+        // 現在のパスワードが一致するか確認
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            return false;
+        }
+
+        // 新しいパスワードをハッシュ化して保存
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return true;
+    }
 }
