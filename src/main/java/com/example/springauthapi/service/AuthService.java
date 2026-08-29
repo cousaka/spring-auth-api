@@ -14,26 +14,17 @@ import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.exception.DuplicateEmailException;
 import com.example.springauthapi.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AuthService {
+
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserService userService;
     private final JwtUtil jwtUtil;
-
-    public AuthService(
-        AuthenticationManager authenticationManager,
-        PasswordEncoder passwordEncoder,
-        UserRepository userRepository,
-        UserService userService,
-        JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.userService = userService;
-        this.jwtUtil = jwtUtil;
-    }
 
     /**
      * ユーザーを新規登録する

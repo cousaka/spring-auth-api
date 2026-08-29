@@ -7,15 +7,13 @@ import com.example.springauthapi.domain.User;
 import com.example.springauthapi.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * メールアドレスからユーザー情報を取得する
@@ -51,7 +49,6 @@ public class UserService {
     @Transactional
     public User update(String email, String name) {
         User user = findByEmail(email);
-
         user.setName(name);
 
         return userRepository.save(user);

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RegisterRequest {
+
     /** メールアドレス */
     private String email;
 

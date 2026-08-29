@@ -22,7 +22,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException e) {
-
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
             .body(new ErrorResponse(e.getMessage()));
@@ -36,7 +35,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(AdminOperationException.class)
     public ResponseEntity<ErrorResponse> handleAdminOperation(AdminOperationException e) {
-
         return ResponseEntity
             .badRequest()
             .body(new ErrorResponse(e.getMessage()));
@@ -50,7 +48,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<ErrorResponse> handleDuplicateEmail(DuplicateEmailException e) {
-
         return ResponseEntity
             .status(HttpStatus.CONFLICT)
             .body(new ErrorResponse(e.getMessage()));

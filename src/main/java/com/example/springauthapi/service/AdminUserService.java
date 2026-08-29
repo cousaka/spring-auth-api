@@ -11,19 +11,17 @@ import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.exception.AdminOperationException;
 import com.example.springauthapi.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * 管理者によるユーザー管理を行うサービス
  */
 @Service
+@RequiredArgsConstructor
 public class AdminUserService {
 
     private final UserRepository userRepository;
     private final UserService userService;
-
-    public AdminUserService(UserRepository userRepository, UserService userService) {
-        this.userRepository = userRepository;
-        this.userService = userService;
-    }
 
     /**
      * 全ユーザーを取得する

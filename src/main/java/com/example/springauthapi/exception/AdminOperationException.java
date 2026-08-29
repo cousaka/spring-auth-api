@@ -5,11 +5,6 @@ package com.example.springauthapi.exception;
  */
 public class AdminOperationException extends RuntimeException {
 
-    /**
-     * コンストラクタ
-     *
-     * @param message エラーメッセージ
-     */
     public AdminOperationException(String message) {
         super(message);
     }

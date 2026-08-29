@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserUpdateRequest {
+
     /** ユーザー名 */
     private String name;
 }

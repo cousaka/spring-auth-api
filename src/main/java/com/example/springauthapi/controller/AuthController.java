@@ -16,17 +16,17 @@ import com.example.springauthapi.dto.RegisterRequest;
 import com.example.springauthapi.dto.RegisterResponse;
 import com.example.springauthapi.service.AuthService;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * 認証に関するAPIを提供するコントローラー
  */
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
-    private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    private final AuthService authService;
 
     /**
      * ユーザーを新規登録する

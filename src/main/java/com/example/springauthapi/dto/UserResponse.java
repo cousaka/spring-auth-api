@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserResponse {
+
     /** ユーザーID */
     private Long id;
 
