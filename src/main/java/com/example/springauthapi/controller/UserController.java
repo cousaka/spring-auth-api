@@ -52,7 +52,6 @@ public class UserController {
     */
     @PutMapping("/me")
     public ResponseEntity<UserResponse> update(Authentication authentication, @RequestBody UserUpdateRequest request) {
-
         User user = userService.update(authentication.getName(), request.getName());
 
         UserResponse response = UserResponse.from(user, authentication.isAuthenticated());

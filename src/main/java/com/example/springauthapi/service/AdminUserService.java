@@ -9,7 +9,6 @@ import com.example.springauthapi.domain.Role;
 import com.example.springauthapi.domain.User;
 import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.exception.AdminOperationException;
-import com.example.springauthapi.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminUserService {
 
-    private final UserRepository userRepository;
     private final UserService userService;
 
     /**
@@ -30,7 +28,7 @@ public class AdminUserService {
      */
     @Transactional(readOnly = true)
     public List<UserResponse> findAll() {
-        return userRepository.findAll()
+        return userService.findAll()
             .stream()
             .map(user -> UserResponse.from(user, false))
             .toList();
@@ -65,16 +63,13 @@ public class AdminUserService {
         }
 
         // 最後のADMINをUSERに変更することを防止
-        if (user.getRole() == Role.ADMIN
-            && role == Role.USER
-            && countAdmins() <= 1) {
-
+        if (user.getRole() == Role.ADMIN && role == Role.USER && userService.countAdmins() <= 1) {
             throw new AdminOperationException("最後のADMINユーザーをUSERに変更することはできません");
         }
 
         user.setRole(role);
 
-        User updated = userRepository.save(user);
+        User updated = userService.save(user);
 
         return UserResponse.from(updated, false);
     }
@@ -95,19 +90,10 @@ public class AdminUserService {
         }
 
         // 最後のADMINを削除することを防止
-        if (user.getRole() == Role.ADMIN && countAdmins() <= 1) {
+        if (user.getRole() == Role.ADMIN && userService.countAdmins() <= 1) {
             throw new AdminOperationException("最後のADMINユーザーを削除することはできません");
         }
 
-        userRepository.delete(user);
-    }
-
-    /**
-     * ADMINユーザー数を取得する
-     *
-     * @return ADMINユーザー数
-     */
-    private long countAdmins() {
-        return userRepository.countByRole(Role.ADMIN);
+        userService.delete(user);
     }
 }
