@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ChangePasswordResponse {
+
     /** 結果メッセージ */
     private String message;
 }

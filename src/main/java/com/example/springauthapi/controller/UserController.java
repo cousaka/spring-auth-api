@@ -13,17 +13,17 @@ import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.dto.UserUpdateRequest;
 import com.example.springauthapi.service.UserService;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * ユーザー情報に関するAPIを提供するコントローラー
  */
 @RestController
 @RequestMapping("/api/user")
+@RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     /**
      * 現在認証されているユーザーの情報を取得する
@@ -52,7 +52,6 @@ public class UserController {
     */
     @PutMapping("/me")
     public ResponseEntity<UserResponse> update(Authentication authentication, @RequestBody UserUpdateRequest request) {
-
         User user = userService.update(authentication.getName(), request.getName());
 
         UserResponse response = UserResponse.from(user, authentication.isAuthenticated());

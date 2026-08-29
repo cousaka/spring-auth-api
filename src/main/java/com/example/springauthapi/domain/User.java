@@ -27,6 +27,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
+
     /** ユーザーID */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -3,6 +3,7 @@ package com.example.springauthapi.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,18 +16,17 @@ import com.example.springauthapi.dto.RoleUpdateRequest;
 import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.service.AdminUserService;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * 管理者向けのユーザー管理APIを提供するコントローラー
  */
 @RestController
 @RequestMapping("/api/admin/users")
+@RequiredArgsConstructor
 public class AdminUserController {
 
     private final AdminUserService adminUserService;
-
-    public AdminUserController(AdminUserService adminUserService) {
-        this.adminUserService = adminUserService;
-    }
 
     /**
      * 全ユーザーを取得する
@@ -57,10 +57,7 @@ public class AdminUserController {
      * @return 更新されたユーザー情報
      */
     @PutMapping("/{id}/role")
-    public ResponseEntity<UserResponse> updateRole(
-        @PathVariable Long id,
-        @RequestBody RoleUpdateRequest request) {
-
+    public ResponseEntity<UserResponse> updateRole(@PathVariable Long id, @RequestBody RoleUpdateRequest request) {
         return ResponseEntity.ok(adminUserService.updateRole(id, request.getRole()));
     }
 
@@ -71,10 +68,7 @@ public class AdminUserController {
      * @return HTTP 204 No Content
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(
-        @PathVariable Long id,
-        org.springframework.security.core.Authentication authentication) {
-
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
         adminUserService.delete(id, authentication.getName());
 
         return ResponseEntity.noContent().build();

@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.springauthapi.domain.User;
 
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
-    private final UserService userService;
+import lombok.RequiredArgsConstructor;
 
-    public CustomUserDetailsService(UserService userService) {
-        this.userService = userService;
-    }
+@Service
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
+
+    private final UserService userService;
 
     /**
      * メールアドレスからユーザー情報を取得する

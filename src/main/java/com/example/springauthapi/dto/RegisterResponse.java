@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RegisterResponse {
+
     /** 登録されたユーザー情報 */
     private UserResponse user;
 }
