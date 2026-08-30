@@ -7,7 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springauthapi.domain.Role;
 import com.example.springauthapi.domain.User;
-import com.example.springauthapi.dto.UserResponse;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 import com.example.springauthapi.exception.AdminOperationException;
 
 import lombok.RequiredArgsConstructor;
@@ -27,11 +28,16 @@ public class AdminUserService {
      * @return ユーザー一覧
      */
     @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
-        return userService.findAll()
+    public SuccessResponse<List<UserResponse>> findAll() {
+        var users = userService.findAll()
             .stream()
             .map(user -> UserResponse.from(user, false))
             .toList();
+
+        return new SuccessResponse<>(
+            true,
+            "ユーザー一覧を取得しました",
+            users);
     }
 
     /**
@@ -41,10 +47,13 @@ public class AdminUserService {
      * @return ユーザー情報
      */
     @Transactional(readOnly = true)
-    public UserResponse findById(Long id) {
+    public SuccessResponse<UserResponse> findById(Long id) {
         User user = userService.findById(id);
 
-        return UserResponse.from(user, false);
+        return new SuccessResponse<>(
+            true,
+            "ユーザー情報を取得しました",
+            UserResponse.from(user, false));
     }
 
     /**
@@ -55,7 +64,7 @@ public class AdminUserService {
      * @return 更新されたユーザー情報
      */
     @Transactional
-    public UserResponse updateRole(Long id, Role role) {
+    public SuccessResponse<UserResponse> updateRole(Long id, Role role) {
         User user = userService.findById(id);
 
         if (role == null) {
@@ -67,11 +76,12 @@ public class AdminUserService {
             throw new AdminOperationException("最後のADMINユーザーをUSERに変更することはできません");
         }
 
-        user.setRole(role);
+        User updated = userService.updateRole(user, role);
 
-        User updated = userService.save(user);
-
-        return UserResponse.from(updated, false);
+        return new SuccessResponse<>(
+            true,
+            "ロールを更新しました",
+            UserResponse.from(updated, false));
     }
 
     /**
@@ -81,7 +91,7 @@ public class AdminUserService {
      * @param currentEmail 現在ログインしているADMINのメールアドレス
      */
     @Transactional
-    public void delete(Long id, String currentEmail) {
+    public SuccessResponse<Void> delete(Long id, String currentEmail) {
         User user = userService.findById(id);
 
         // 自分自身の削除を防止
@@ -95,5 +105,10 @@ public class AdminUserService {
         }
 
         userService.delete(user);
+
+        return new SuccessResponse<>(
+            true,
+            "ユーザーを削除しました",
+            null);
     }
 }

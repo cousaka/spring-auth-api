@@ -6,7 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.springauthapi.dto.ErrorResponse;
+import com.example.springauthapi.dto.response.ErrorResponse;
 
 /**
  * API全体の例外を処理するハンドラー
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException e) {
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(new ErrorResponse(e.getMessage()));
+            .body(new ErrorResponse(e.getMessage(), null));
     }
 
     /**
@@ -37,32 +37,29 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleAdminOperation(AdminOperationException e) {
         return ResponseEntity
             .badRequest()
-            .body(new ErrorResponse(e.getMessage()));
+            .body(new ErrorResponse(e.getMessage(), null));
     }
 
     /**
-     * メールアドレスが重複している場合
+     * ログイン認証に失敗した場合
      *
      * @param e 例外
-     * @return HTTP 409
+     * @return HTTP 401
      */
-    @ExceptionHandler(DuplicateEmailException.class)
-    public ResponseEntity<ErrorResponse> handleDuplicateEmail(DuplicateEmailException e) {
-        return ResponseEntity
-            .status(HttpStatus.CONFLICT)
-            .body(new ErrorResponse(e.getMessage()));
-    }
-
-    /**
-    * ログイン認証に失敗した場合
-    *
-    * @param e 例外
-    * @return HTTP 401
-    */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException e) {
         return ResponseEntity
             .status(HttpStatus.UNAUTHORIZED)
-            .body(new ErrorResponse("メールアドレスまたはパスワードが正しくありません"));
+            .body(new ErrorResponse("メールアドレスまたはパスワードが正しくありません", null));
+    }
+
+    /**
+     * その他の予期しない例外（500）
+     */
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorResponse("サーバー内部でエラーが発生しました", null));
     }
 }

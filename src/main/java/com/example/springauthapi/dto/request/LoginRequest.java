@@ -1,4 +1,4 @@
-package com.example.springauthapi.dto;
+package com.example.springauthapi.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.example.springauthapi.dto;
+package com.example.springauthapi.dto.request;
 
 import com.example.springauthapi.domain.Role;
 

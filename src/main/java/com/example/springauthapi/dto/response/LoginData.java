@@ -1,14 +1,15 @@
-package com.example.springauthapi.dto;
+package com.example.springauthapi.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * ログイン成功時のレスポンス
+ * ログイン成功時に返却されるデータ
+ *
  */
 @Getter
 @AllArgsConstructor
-public class LoginResponse {
+public class LoginData {
 
     /** JWT */
     private String token;

@@ -39,11 +39,11 @@ public class JwtUtil {
 
         return Jwts.builder()
             .claims()
-            .subject(email)
-            .issuedAt(now)
-            .expiration(expiration)
+            .subject(email) // JWT の subject に email を設定
+            .issuedAt(now) // 発行日時
+            .expiration(expiration) // 有効期限
             .and()
-            .signWith(getSigningKey())
+            .signWith(getSigningKey()) // 署名
             .compact();
     }
 
@@ -55,7 +55,7 @@ public class JwtUtil {
      */
     public String extractEmail(String token) {
         Claims claims = Jwts.parser()
-            .verifyWith(getSigningKey())
+            .verifyWith(getSigningKey()) // 署名検証
             .build()
             .parseSignedClaims(token)
             .getPayload();
@@ -78,6 +78,7 @@ public class JwtUtil {
 
             return true;
         } catch (Exception e) {
+            // 署名不一致・期限切れなど
             return false;
         }
     }

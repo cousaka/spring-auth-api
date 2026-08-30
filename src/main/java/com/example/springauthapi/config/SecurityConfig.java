@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.springauthapi.service.CustomUserDetailsService;
+import com.example.springauthapi.service.security.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     /**
      * パスワードエンコーダー
@@ -48,6 +49,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
+        // パスワードの照合に使用するエンコーダーを設定
         provider.setPasswordEncoder(passwordEncoder);
 
         return new ProviderManager(provider);
@@ -73,16 +75,20 @@ public class SecurityConfig {
             // セッションを使わない
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // APIの認証設定
+            // API の認可設定
             .authorizeHttpRequests(auth -> auth
-                // 登録
+                // 認証不要 API
                 .requestMatchers("/api/auth/register").permitAll()
-                // ログイン
                 .requestMatchers("/api/auth/login").permitAll()
-                // ADMIN
+
+                // ADMIN 専用 API
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // その他はJWT必須
+
+                // その他は JWT 必須
                 .anyRequest().authenticated())
+
+            // 未ログイン時のレスポンスをJSONで
+            .exceptionHandling(e -> e.authenticationEntryPoint(customAuthenticationEntryPoint))
 
             // JWT Filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -99,12 +105,16 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
+        // 許可するオリジン
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
+        // 許可する HTTP メソッド
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // 許可するヘッダー
         configuration.setAllowedHeaders(List.of("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
+        // 全 API に対して CORS を適用
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
