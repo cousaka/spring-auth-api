@@ -19,6 +19,16 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
+     * ユーザーが見つからない場合に共通の例外を生成する
+     *
+     * @param key 検索キー（メールアドレスやID）
+     * @return UserNotFoundException
+     */
+    private UserNotFoundException notFound(String key) {
+        return new UserNotFoundException("ユーザーが見つかりません: " + key);
+    }
+
+    /**
      * メールアドレスからユーザー情報を取得する
      *
      * @param email メールアドレス
@@ -27,7 +37,7 @@ public class UserService {
      */
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-            .orElseThrow(() -> new UserNotFoundException("User not found: " + email));
+            .orElseThrow(() -> notFound(email));
     }
 
     /**
@@ -39,7 +49,7 @@ public class UserService {
      */
     public User findById(Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new UserNotFoundException("ユーザーが見つかりません: " + id));
+            .orElseThrow(() -> notFound(String.valueOf(id)));
     }
 
     /**
@@ -136,6 +146,7 @@ public class UserService {
     @Transactional
     public User updatePassword(User user, String encodedPassword) {
         user.setPassword(encodedPassword);
+
         return save(user);
     }
 
@@ -149,6 +160,7 @@ public class UserService {
     @Transactional
     public User updateRole(User user, Role role) {
         user.setRole(role);
+
         return save(user);
     }
 }

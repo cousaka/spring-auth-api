@@ -1,7 +1,5 @@
 package com.example.springauthapi.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.springauthapi.dto.RoleUpdateRequest;
+import com.example.springauthapi.dto.SuccessResponse;
 import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.service.AdminUserService;
 
@@ -34,7 +33,7 @@ public class AdminUserController {
      * @return ユーザー一覧
      */
     @GetMapping
-    public ResponseEntity<List<UserResponse>> findAll() {
+    public ResponseEntity<SuccessResponse<?>> findAll() {
         return ResponseEntity.ok(adminUserService.findAll());
     }
 
@@ -45,7 +44,7 @@ public class AdminUserController {
      * @return ユーザー情報
      */
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<UserResponse>> findById(@PathVariable Long id) {
         return ResponseEntity.ok(adminUserService.findById(id));
     }
 
@@ -57,7 +56,8 @@ public class AdminUserController {
      * @return 更新されたユーザー情報
      */
     @PutMapping("/{id}/role")
-    public ResponseEntity<UserResponse> updateRole(@PathVariable Long id, @RequestBody RoleUpdateRequest request) {
+    public ResponseEntity<SuccessResponse<UserResponse>> updateRole(@PathVariable Long id,
+        @RequestBody RoleUpdateRequest request) {
         return ResponseEntity.ok(adminUserService.updateRole(id, request.getRole()));
     }
 
@@ -68,9 +68,9 @@ public class AdminUserController {
      * @return HTTP 204 No Content
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
-        adminUserService.delete(id, authentication.getName());
+    public ResponseEntity<SuccessResponse<Void>> delete(@PathVariable Long id, Authentication authentication) {
+        var response = adminUserService.delete(id, authentication.getName());
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(response);
     }
 }

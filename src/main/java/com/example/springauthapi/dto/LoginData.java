@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * ユーザー登録成功時のレスポンス
+ * ログイン成功時に返却されるデータ
+ *
  */
 @Getter
 @AllArgsConstructor
-public class RegisterResponse {
+public class LoginData {
 
-    /** 登録されたユーザー情報 */
+    /** JWT */
+    private String token;
+
+    /** ユーザー情報 */
     private UserResponse user;
 }

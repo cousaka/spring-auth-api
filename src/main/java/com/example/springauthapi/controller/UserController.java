@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springauthapi.domain.User;
+import com.example.springauthapi.dto.SuccessResponse;
 import com.example.springauthapi.dto.UserResponse;
 import com.example.springauthapi.dto.UserUpdateRequest;
-import com.example.springauthapi.service.UserService;
+import com.example.springauthapi.service.UserAppService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserAppService userAppService;
 
     /**
      * 現在認証されているユーザーの情報を取得する
@@ -32,15 +32,10 @@ public class UserController {
      * @return 認証ユーザーの情報
      */
     @GetMapping("/me")
-    public UserResponse me(Authentication authentication) {
-        // 認証情報からメールアドレスを取得
-        String email = authentication.getName();
+    public ResponseEntity<SuccessResponse<UserResponse>> me(Authentication authentication) {
+        var response = userAppService.getMe(authentication.getName(), authentication.isAuthenticated());
 
-        // ユーザー情報を取得
-        User user = userService.findByEmail(email);
-
-        // レスポンスDTOに変換
-        return UserResponse.from(user, authentication.isAuthenticated());
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -51,10 +46,13 @@ public class UserController {
     * @return 更新後のユーザー情報
     */
     @PutMapping("/me")
-    public ResponseEntity<UserResponse> update(Authentication authentication, @RequestBody UserUpdateRequest request) {
-        User user = userService.update(authentication.getName(), request.getName());
+    public ResponseEntity<SuccessResponse<UserResponse>> update(Authentication authentication,
+        @RequestBody UserUpdateRequest request) {
 
-        UserResponse response = UserResponse.from(user, authentication.isAuthenticated());
+        var response = userAppService.updateMe(
+            authentication.getName(),
+            request.getName(),
+            authentication.isAuthenticated());
 
         return ResponseEntity.ok(response);
     }
