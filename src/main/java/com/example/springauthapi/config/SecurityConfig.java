@@ -27,6 +27,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomUserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     /**
      * パスワードエンコーダー
@@ -85,6 +86,9 @@ public class SecurityConfig {
 
                 // その他は JWT 必須
                 .anyRequest().authenticated())
+
+            // 未ログイン時のレスポンスをJSONで
+            .exceptionHandling(e -> e.authenticationEntryPoint(customAuthenticationEntryPoint))
 
             // JWT Filter
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
