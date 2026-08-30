@@ -7,7 +7,6 @@
 --   メールアドレス: test@example.com
 --   パスワード: password
 INSERT INTO users (
-    id,
     email,
     password,
     name,
@@ -16,7 +15,6 @@ INSERT INTO users (
     updated_at
 )
 VALUES (
-    1,
     'test@example.com',
     '{bcrypt}$2a$10$yMZ9WWsThEwU8Fb6fbsFeukiidhJtHoSoLEuuNnMvUBCu70SjIeqm',
     'テストユーザー',
