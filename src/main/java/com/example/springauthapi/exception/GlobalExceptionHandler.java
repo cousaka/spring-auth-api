@@ -6,7 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.example.springauthapi.dto.ErrorResponse;
+import com.example.springauthapi.dto.response.ErrorResponse;
 
 /**
  * API全体の例外を処理するハンドラー

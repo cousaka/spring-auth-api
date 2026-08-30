@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.springauthapi.config.JwtUtil;
 import com.example.springauthapi.domain.Role;
 import com.example.springauthapi.domain.User;
-import com.example.springauthapi.dto.LoginData;
-import com.example.springauthapi.dto.SuccessResponse;
-import com.example.springauthapi.dto.UserResponse;
+import com.example.springauthapi.dto.response.LoginData;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 

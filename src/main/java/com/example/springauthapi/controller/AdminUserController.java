@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springauthapi.dto.RoleUpdateRequest;
-import com.example.springauthapi.dto.SuccessResponse;
-import com.example.springauthapi.dto.UserResponse;
+import com.example.springauthapi.dto.request.RoleUpdateRequest;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 import com.example.springauthapi.service.AdminUserService;
 
 import lombok.RequiredArgsConstructor;

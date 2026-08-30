@@ -1,4 +1,4 @@
-package com.example.springauthapi.service;
+package com.example.springauthapi.service.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.springauthapi.domain.User;
+import com.example.springauthapi.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 

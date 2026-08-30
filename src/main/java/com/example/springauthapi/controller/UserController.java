@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springauthapi.dto.SuccessResponse;
-import com.example.springauthapi.dto.UserResponse;
-import com.example.springauthapi.dto.UserUpdateRequest;
+import com.example.springauthapi.dto.request.UserUpdateRequest;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 import com.example.springauthapi.service.UserAppService;
 
 import lombok.RequiredArgsConstructor;

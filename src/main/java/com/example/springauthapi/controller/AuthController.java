@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springauthapi.dto.ChangePasswordRequest;
-import com.example.springauthapi.dto.LoginData;
-import com.example.springauthapi.dto.LoginRequest;
-import com.example.springauthapi.dto.RegisterRequest;
-import com.example.springauthapi.dto.SuccessResponse;
-import com.example.springauthapi.dto.UserResponse;
+import com.example.springauthapi.dto.request.ChangePasswordRequest;
+import com.example.springauthapi.dto.request.LoginRequest;
+import com.example.springauthapi.dto.request.RegisterRequest;
+import com.example.springauthapi.dto.response.LoginData;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 import com.example.springauthapi.service.AuthService;
 
 import lombok.RequiredArgsConstructor;

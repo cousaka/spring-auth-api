@@ -17,7 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.springauthapi.service.CustomUserDetailsService;
+import com.example.springauthapi.service.security.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 

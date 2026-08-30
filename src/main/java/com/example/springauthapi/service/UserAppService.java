@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.springauthapi.domain.User;
-import com.example.springauthapi.dto.SuccessResponse;
-import com.example.springauthapi.dto.UserResponse;
+import com.example.springauthapi.dto.response.SuccessResponse;
+import com.example.springauthapi.dto.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 

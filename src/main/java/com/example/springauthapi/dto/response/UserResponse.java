@@ -1,4 +1,4 @@
-package com.example.springauthapi.dto;
+package com.example.springauthapi.dto.response;
 
 import com.example.springauthapi.domain.User;
 
