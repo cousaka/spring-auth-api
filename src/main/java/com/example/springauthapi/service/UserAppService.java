@@ -42,7 +42,12 @@ public class UserAppService {
      */
     @Transactional
     public SuccessResponse<UserResponse> updateMe(String email, String name, boolean authenticated) {
-        User updated = userService.update(email, name);
+        // ユーザー情報を作成
+        User user = userService.findByEmail(email);
+        user.setName(name);
+
+        // ユーザー情報を更新
+        User updated = userService.save(user);
 
         return new SuccessResponse<>(
             true,

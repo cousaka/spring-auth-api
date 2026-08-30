@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.springauthapi.config.JwtUtil;
+import com.example.springauthapi.domain.Role;
 import com.example.springauthapi.domain.User;
 import com.example.springauthapi.dto.LoginData;
 import com.example.springauthapi.dto.SuccessResponse;
@@ -36,8 +37,14 @@ public class AuthService {
             return new SuccessResponse<>(false, "このメールアドレスは既に登録されています", null);
         }
 
-        // ユーザー情報を作成・登録
-        User saved = userService.createUser(email, passwordEncoder.encode(password), name);
+        // ユーザー情報を作成
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setName(name);
+        user.setRole(Role.USER);
+        // ユーザー情報を登録
+        User saved = userService.save(user);
 
         // ユーザー情報をレスポンスDTOに変換し、返却
         return new SuccessResponse<>(

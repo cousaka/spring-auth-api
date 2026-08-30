@@ -76,8 +76,7 @@ public class AdminUserService {
             throw new AdminOperationException("最後のADMINユーザーをUSERに変更することはできません");
         }
 
-        user.setRole(role);
-        User updated = userService.save(user);
+        User updated = userService.updateRole(user, role);
 
         return new SuccessResponse<>(
             true,
